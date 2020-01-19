@@ -102,7 +102,7 @@
           <h4 class="grey--text text--darken-1">Общие размеры</h4>
           <v-row>
             <v-col cols="3">
-              <v-card>add photo</v-card>
+              <v-card>добавить фото</v-card>
             </v-col>
           </v-row>
           <div class="d-flex justify-end mt-5">
