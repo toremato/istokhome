@@ -78,7 +78,7 @@ export const actions = {
   getPerformer({ commit, dispatch }) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .$get('api/performer/performer')
+        .$get('api/performer/performer/')
         .then((res) => {
           commit('SET_PERFORMER', res.results[0])
           dispatch('getProjects')

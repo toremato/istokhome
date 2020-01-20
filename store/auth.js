@@ -34,18 +34,16 @@ export const actions = {
     await this.$axios
       .$post('api/users/auth/', credentials)
       .then((res) => {
-        console.log('RES', res)
-        console.log('FINALLY')
+        console.log('Login: ', res)
         commit('SET_TOKEN', res.token)
+        // const token = 'Token ' + res.token
+        // this.$axios.setHeader('Authorization', token)
         dispatch('getUser')
-        this.dispatch('performer/getPerformer').then(() => {
-          this.$router.push({ path: 'partners/me' })
-        })
         // this.dispatch('categories/getCategories')
         // this.dispatch('performer/getCities')
       })
       .catch((err) => {
-        console.error('ERROR', err.response)
+        console.error('Login error: ', err.response)
       })
   },
   logout({ commit }) {
@@ -54,10 +52,17 @@ export const actions = {
   },
   async getUser({ commit }) {
     await this.$axios
-      .$get('api/users/profile')
+      .$get('api/users/profile/')
       .then((res) => {
         console.log('USER', res)
         commit('SET_USER', res)
+        if (res.performer_id) {
+          this.dispatch('performer/getPerformer')
+            .then(() => this.$router.push({ path: 'partners/me' }))
+            .catch((err) => console.error('Performer error: ', err))
+        } else {
+          this.$router.push({ path: 'partners/register' })
+        }
       })
       .catch((err) => {
         console.error(err.response)
