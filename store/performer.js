@@ -81,5 +81,39 @@ export const actions = {
       .catch((err) => {
         console.error('Projects error: ', err.response)
       })
+  },
+  async uploadImages({ commit }, images) {
+    const performerId = this.state.performer.self.id
+    const token = localStorage.getItem('token')
+
+    for (let i = 0; i < images.length; i++) {
+      const formData = new FormData()
+      formData.append('image', images[i])
+      await this.$axios
+        .post('api/performer/performer/' + performerId + '/project/' + '1' + '/image/', formData, {
+            headers: { Authorization: 'Token ' + token }
+          }
+        )
+        .then((res) => {
+          console.log('UPLOADED IMAGE: ', res)
+        })
+        .catch((err) => {
+          console.error('IMAGE UPLOAD ERROR: ', err.response)
+        })
+    }
+  },
+  async getProjectImages({ commit }) {
+    const performerId = this.state.performer.self.id
+    await this.$axios
+      .get('api/performer/performer/' + performerId + '/project/' + '1' + '/image/', {
+          headers: { Authorization: 'Token ' + localStorage.getItem('token') }
+        }
+      )
+      .then((res) => {
+        console.log('PROJECT IMAGES: ', res)
+      })
+      .catch((err) => {
+        console.error(err.response)
+      })
   }
 }

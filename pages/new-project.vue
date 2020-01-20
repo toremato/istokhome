@@ -2,7 +2,6 @@
   <v-container fluid>
     <v-container>
       <v-row justify="center" class="main-wrapper py-7 mx-1">
-        <!-- <v-row> -->
         <v-col cols="10">
           <h3 class="pb-8">Новый проект</h3>
           <v-row>
@@ -99,14 +98,28 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <h4 class="grey--text text--darken-1">Общие размеры</h4>
+          <h4 class="grey--text text--darken-1">Фото проекта *</h4>
           <v-row>
             <v-col cols="3">
-              <v-card>добавить фото</v-card>
+              <v-btn @click="pickImage">Добавить фото</v-btn>
+              <input
+                ref="imagesInput"
+                @change="onImagePicked"
+                type="file"
+                style="display: none"
+                accept="image/*"
+                multiple
+              />
+            </v-col>
+            <v-col cols="3" v-for="(image, key) in images" :key="key">
+              <div class="preview-image-wrapper">
+                <v-img :ref="'image' + parseInt(key)" class="preview-image" />
+              </div>
             </v-col>
           </v-row>
           <div class="d-flex justify-end mt-5">
             <v-btn
+              @click="test"
               :ripple="false"
               text
               rounded
@@ -133,6 +146,8 @@ export default {
     return {
       name: 1,
       items: ['one', 'two', 'three'],
+      images: [],
+      previewImages: [],
       project: {
         name: '',
         sub_project_category: null,
@@ -157,11 +172,40 @@ export default {
   },
   methods: {
     createProject() {
-      this.$store.dispatch('performer/createProject', this.project)
+      // this.$store.dispatch('performer/createProject', this.project)
+      console.log('IMAGES:')
+      this.$store.dispatch('performer/uploadImages', this.images)
+    },
+    pickImage() {
+      this.$refs.imagesInput.click()
+    },
+    onImagePicked(event) {
+      // this.images = event.target.files
+      // this.images.push(event.target.files)
+      const files = event.target.files
+
+      console.log('FILES: ', files)
+      for (let i = 0; i < files.length; i++) {
+        this.images.push(files[i])
+      }
+      for (let i = 0; i < this.images.length; i++) {
+        const reader = new FileReader()
+        reader.addEventListener(
+          'load',
+          function() {
+            // this.$refs['image' + parseInt(i)][0].src = reader.result
+            this.$refs['image' + parseInt(i)][0].src = reader.result
+          }.bind(this),
+          false
+        )
+
+        reader.readAsDataURL(this.images[i])
+      }
+      console.log('Images: ', this.images)
+    },
+    test() {
+      this.$store.dispatch('performer/getProjectImages')
     }
-  },
-  mounted() {
-    console.log('tr')
   }
 }
 </script>
@@ -171,6 +215,13 @@ export default {
 }
 .v-input {
   font-size: 14px;
+}
+.preview-image-wrapper {
+  border-radius: 10px;
+  .preview-image {
+    border-radius: 10px;
+    border: 1px solid #808080;
+  }
 }
 </style>
 <style lang="scss">
