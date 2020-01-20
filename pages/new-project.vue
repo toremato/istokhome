@@ -101,7 +101,14 @@
           <h4 class="grey--text text--darken-1">Фото проекта *</h4>
           <v-row>
             <v-col cols="3">
-              <v-btn @click="pickImage">Добавить фото</v-btn>
+              <!-- <v-btn @click="pickImage">Добавить фото</v-btn> -->
+              <v-img class="addPhoto" @click="pickImage" aspect-ratio="1.3333">
+                <div class="d-flex flex-column align-center justify-space-around py-7 fill-height">
+                  <span></span>
+                  <v-icon>fas fa-camera</v-icon>
+                  <span>Добавить фото</span>
+                  </div>
+              </v-img>
               <input
                 ref="imagesInput"
                 @change="onImagePicked"
@@ -113,7 +120,7 @@
             </v-col>
             <v-col cols="3" v-for="(image, key) in images" :key="key">
               <div class="preview-image-wrapper">
-                <v-img :ref="'image' + parseInt(key)" class="preview-image" />
+                <v-img :ref="'image' + parseInt(key)" class="preview-image" aspect-ratio="1.3333"/>
               </div>
             </v-col>
           </v-row>
@@ -121,6 +128,7 @@
             <v-btn
               @click="test"
               :ripple="false"
+              :disabled="loading"
               text
               rounded
               class="text-capitalize primary--text"
@@ -129,6 +137,7 @@
             <v-btn
               @click="createProject"
               :width="isMobile ? '' : '263'"
+              :loading="loading"
               rounded
               depressed
               class="primary text-capitalize"
@@ -147,7 +156,7 @@ export default {
       name: 1,
       items: ['one', 'two', 'three'],
       images: [],
-      previewImages: [],
+      loading: false,
       project: {
         name: '',
         sub_project_category: null,
@@ -172,9 +181,25 @@ export default {
   },
   methods: {
     createProject() {
-      // this.$store.dispatch('performer/createProject', this.project)
-      console.log('IMAGES:')
-      this.$store.dispatch('performer/uploadImages', this.images)
+      this.loading = true
+      this.$store.dispatch('performer/createProject', this.project).then((res) => {
+          console.log('PROJECT? ', res)
+          const imagesData = {
+            images: this.images,
+            id: res.id
+          }
+          this.$store
+            .dispatch('performer/uploadImages', imagesData)
+            .then((res) => {
+              console.log('New project: ', res)
+              this.loading = false
+              this.$router.push({ path: 'partners/me' })
+            })
+            .catch((err) => {
+              console.error('New project error: ', err)
+              this.loading = false
+            })
+        })
     },
     pickImage() {
       this.$refs.imagesInput.click()
@@ -215,6 +240,11 @@ export default {
 }
 .v-input {
   font-size: 14px;
+}
+.addPhoto {
+  background: #ebecec;
+  border-radius: 10px;
+  cursor: pointer;
 }
 .preview-image-wrapper {
   border-radius: 10px;
