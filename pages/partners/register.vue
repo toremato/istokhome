@@ -176,6 +176,7 @@ export default {
     createPerformer() {
       // const city = this.cities.find((c) => c.id === this.newPerformer.city)
       // console.log('CITY', city)
+      
       this.newPerformer.working_regions[0] = this.newPerformer.city
       console.log('FORM', this.newPerformer)
       console.log('STATE', this.$store.state)

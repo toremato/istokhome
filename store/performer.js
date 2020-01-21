@@ -69,7 +69,8 @@ export const actions = {
       .post('api/performer/performer/', newPerformer)
       .then((res) => {
         console.log('PERFORMER RESPONSE: ', res)
-        commit('SET_PERFORMER_INFO', newPerformer)
+        commit('SET_PERFORMER', newPerformer)
+        this.$router.push({ name: 'partners-me' })
       })
       .catch((err) => {
         console.error('PERFORMER ERROR: ', err.response)
@@ -81,6 +82,7 @@ export const actions = {
         .$get('api/performer/performer/')
         .then((res) => {
           commit('SET_PERFORMER', res.results[0])
+          console.log('perfprMER: ', res.results[0])
           dispatch('getProjects')
           resolve(res)
         })
