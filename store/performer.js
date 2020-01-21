@@ -44,6 +44,7 @@ export const actions = {
         )
         .then((res) => {
           console.log('PROJECT CREATED', res)
+          dispatch('getProjects')
           resolve(res)
         })
         .catch((err) => {
@@ -69,7 +70,8 @@ export const actions = {
       .post('api/performer/performer/', newPerformer)
       .then((res) => {
         console.log('PERFORMER RESPONSE: ', res)
-        commit('SET_PERFORMER', newPerformer)
+        // commit('SET_PERFORMER', newPerformer)
+        dispatch('getPerformer')
         this.$router.push({ name: 'partners-me' })
       })
       .catch((err) => {
@@ -93,9 +95,12 @@ export const actions = {
     })
   },
   async getProjects({ commit }) {
+    const token = localStorage.getItem('token')
     const performerId = this.state.performer.self.id
     await this.$axios
-      .get('api/performer/performer/' + performerId + '/project/')
+      .get('api/performer/performer/' + performerId + '/project/', {
+        headers: { Authorization: 'Token ' + token }
+      })
       .then((res) => {
         console.log('List of projects: ', res.data.results)
         commit('SET_PROJECTS', res.data.results)
@@ -123,13 +128,13 @@ export const actions = {
           )
           .then((res) => {
             console.log('UPLOADED IMAGE: ', res)
-            resolve(res)
           })
           .catch((err) => {
             console.error('IMAGE UPLOAD ERROR: ', err.response)
             reject(err)
           })
       }
+      resolve()
     })
   },
   async getProjectImages({ commit }, projectId) {

@@ -239,8 +239,8 @@ export default {
 .welcome-search-mobile {
   .v-input__slot {
     // background: red !important;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
     border-right: 1px solid rgba(40, 47, 54, 0.15);
   }
 }

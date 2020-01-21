@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pb-6">
     <v-container class="section">
       <v-row no-gutters>
         <v-col class="d-flex justify-center align-center" sm="3" md="2">
@@ -40,9 +40,9 @@
         <v-tab>услуги</v-tab>
       </v-tabs>
       <v-divider class="mb-6"></v-divider>
-      <v-tabs-items v-model="active">
+      <v-tabs-items v-model="active" class="pb-6">
         <v-tab-item>
-          <v-col cols="8" class="mx-auto">
+          <v-col cols="12" md="8" class="mx-auto">
             <p class="common-tab-title mb-7 mt-5">
               Заполненность профиля:
               <span style="color: #1A1A1A">Начинающий</span>
@@ -64,8 +64,10 @@
           <!--          <nuxt-link to="/new-project" class="logo-link">-->
           <!--            <v-btn>Добавить проект</v-btn>-->
           <!--          </nuxt-link>-->
-          <v-col v-if="projects.length" cols="8" class="mx-auto">
-            <p class="mb-2">Количество проектов:<span>3</span></p>
+          <v-col v-if="projects.length" cols="12" md="8" class="mx-auto">
+            <p class="mb-2">
+              Количество проектов:<span>{{ ' ' + projects.length }}</span>
+            </p>
             <v-card
               v-for="project in projects"
               :key="project.id"
@@ -75,11 +77,21 @@
                 <v-row>
                   <v-col cols="auto">
                     <v-img
+                      v-if="!project.images.length"
                       :src="require('assets/images/project_image.svg')"
                       height="125"
                       width="125"
                       contain
                       class="ml-2"
+                    />
+                    <v-img
+                      v-else
+                      :src="'https://istokhome.com' + project.images[0].image"
+                      height="125"
+                      width="125"
+                      aspect-ratio="2"
+                      class="ml-2"
+                      style="box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.15); border-radius: 7px;"
                     />
                   </v-col>
                   <v-col class="py-0">
@@ -106,6 +118,7 @@
                               small
                               dense
                               class="ml-n1 mb-3"
+                              readonly
                             />
                             <div class="d-flex">
                               <div class="mr-3">
@@ -161,15 +174,19 @@
           </v-col>
         </v-tab-item>
         <v-tab-item>
-          <h4>Ещё никто не оставил отзыва о вас</h4>
+          <v-col cols="12" md="8" class="mx-auto">
+            <p style="color: #808080; text-align: center; margin-top: 1.5rem;">К сожалению у вас нет отзывов</p>
+          </v-col>
         </v-tab-item>
         <v-tab-item>
-          <h4>Услуги</h4>
+          <v-col cols="12" md="8" class="mx-auto">
+            <p style="color: #808080; text-align: center; margin-top: 1.5rem;">К сожалению у вас нет услуг</p>
+          </v-col>
         </v-tab-item>
       </v-tabs-items>
     </v-container>
-    <v-container class="common-block mb-4">
-      <v-col cols="8" class="mx-auto">
+    <v-container v-if="active === 0" class="common-block mb-4">
+      <v-col cols="12" md="8" class="mx-auto">
         <v-row>
           <div @click="goToCreate()" class="no-projects-common mr-10 clickable">
             <v-img
@@ -192,8 +209,8 @@
         </v-row>
       </v-col>
     </v-container>
-    <v-container class="address-block mb-4">
-      <v-col cols="8" class="mx-auto">
+    <v-container v-if="active === 0" class="address-block">
+      <v-col cols="12" md="8" class="mx-auto">
         <v-row>
           <div class="name">
             <p class="mb-2">Регионы обслуживания:</p>
@@ -212,6 +229,7 @@
           </div>
         </v-row>
       </v-col>
+    </v-container>
     </v-container>
 
     <!-- <v-container>
@@ -234,7 +252,7 @@
         </v-col>
       </v-row>
     </v-container> -->
-    <v-container fluid>
+    <!-- <v-container fluid> -->
       <!-- Stack the columns on mobile by making one full-width and the other half-width -->
       <!-- <v-row>
         <v-col cols="12" md="8">
@@ -266,7 +284,7 @@
           </v-card>
         </v-col>
       </v-row> -->
-    </v-container>
+    <!-- </v-container> -->
   </v-container>
 </template>
 

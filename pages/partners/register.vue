@@ -47,13 +47,13 @@
               ></v-select>
             </v-col>
             <v-col cols="12" sm="4">
-              <span>Веб сайт</span>
+              <span>Адрес</span>
               <v-text-field
-                v-model="newPerformer.site"
+                v-model="newPerformer.address"
                 dense
                 outlined
                 hide-details
-                placeholder="Ссылка на ваш сайт"
+                placeholder="Адрес вашего офиса"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="4">
@@ -104,13 +104,13 @@
             <v-col cols="12">
               <span>Награды</span>
               <v-textarea
-                v-model="newPerformer.description"
+                v-model="newPerformer.reward"
                 hide-details
                 outlined
                 no-resize
                 auto-grow
                 clearable
-                placeholder="Введите свои достижния, сертификаты, грамоты и т.д"
+                placeholder="Введите свои достижения, сертификаты, грамоты и т.д"
               ></v-textarea>
             </v-col>
           </v-row>
@@ -149,11 +149,11 @@ export default {
         sub_performer_category: null,
         description: null,
         working_regions: [],
-        // reward: null,
+        reward: null,
         city: null,
         phone: null,
-        email: null
-        // site: null
+        email: null,
+        address: null
       },
       address: null
     }
@@ -162,7 +162,7 @@ export default {
     ...mapState({
       // performerCategories: 'categories/getPerformerCategories'
       cities: (state) => state.performer.cities,
-      performerCategories: (state) => state.categories.performer,
+      performerCategories: (state) => state.categories.performer
     }),
     categories() {
       return [this.$store.state.categories.list]

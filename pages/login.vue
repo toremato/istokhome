@@ -17,8 +17,17 @@
               <v-text-field outlined flat dense label="Имя" v-model="formRegister.first_name"></v-text-field>
               <v-text-field outlined flat dense label="Email" v-model="formRegister.email"></v-text-field>
               <v-text-field outlined flat dense label="Телефон" v-model="formRegister.phone"></v-text-field>
-              <v-text-field outlined flat dense label="Пароль" v-model="formRegister.password"></v-text-field>
-              <v-btn class="primary subtitle-1 text-capitalize" rounded block @click.prevent="register">Зарегистрироваться</v-btn>
+          <v-text-field
+            :append-icon="showSignupPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showSignupPassword = !showSignupPassword"
+            :type="showSignupPassword ? 'text' : 'password'"
+            v-model="formRegister.password"
+            outlined
+            flat
+            dense
+            label="Пароль"
+          ></v-text-field>
+              <v-btn class="primary subtitle-1 text-capitalize" depressed rounded block @click.prevent="register">Зарегистрироваться</v-btn>
             </v-form>
           </div>
           <v-spacer />
@@ -27,8 +36,17 @@
             <v-form class="auth-form">
               <h3 class="mb-4">Авторизация</h3>
               <v-text-field outlined flat dense label="Телефон" v-model="formLogin.username"></v-text-field>
-              <v-text-field outlined flat dense label="Пароль" v-model="formLogin.password"></v-text-field>
-              <v-btn class="primary subtitle-1 text-capitalize" rounded block @click.prevent="login">Войти</v-btn>
+          <v-text-field
+            :append-icon="showLoginPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showLoginPassword = !showLoginPassword"
+            :type="showLoginPassword ? 'text' : 'password'"
+            v-model="formLogin.password"
+            outlined
+            flat
+            dense
+            label="Пароль"
+          ></v-text-field>
+              <v-btn class="primary subtitle-1 text-capitalize" depressed rounded block @click.prevent="login">Войти</v-btn>
             </v-form>
           </div>
           <v-spacer />
@@ -54,6 +72,8 @@ export default {
   },
   data() {
     return {
+      showLoginPassword: false,
+      showSignupPassword: false,
       formRegister: {
         first_name: '',
         last_name: '',

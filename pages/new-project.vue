@@ -30,7 +30,7 @@
               ></v-select>
             </v-col>
             <v-col cols="12" sm="4">
-              <span>Стоимость *</span>
+              <span>Стоимость за кв/м(м²) *</span>
               <v-text-field
                 v-model="project.price"
                 dense
@@ -38,7 +38,7 @@
                 hide-details
                 suffix="kzt"
                 type="number"
-                placeholder="Введите стоимость проекта"
+                placeholder="Введите цену"
               ></v-text-field>
             </v-col>
             <v-col>
@@ -188,17 +188,22 @@ export default {
             images: this.images,
             id: res.id
           }
-          this.$store
-            .dispatch('performer/uploadImages', imagesData)
-            .then((res) => {
-              console.log('New project: ', res)
-              this.loading = false
-              this.$router.push({ path: 'partners/me' })
-            })
-            .catch((err) => {
-              console.error('New project error: ', err)
-              this.loading = false
-            })
+          if (!this.images.length) {
+            this.loading = false
+            this.$router.push({ path: 'partners/me' })
+          } else {
+            this.$store
+              .dispatch('performer/uploadImages', imagesData)
+              .then((res) => {
+                console.log('New project: ', res)
+                this.loading = false
+                this.$router.push({ path: 'partners/me' })
+              })
+              .catch((err) => {
+                console.error('New project error: ', err)
+                this.loading = false
+              })
+          }
         })
     },
     pickImage() {
